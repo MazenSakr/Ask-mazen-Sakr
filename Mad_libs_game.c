@@ -10,6 +10,7 @@
 /*********************/
 
 void main(void) {
+    system("color 30");
     char adjective1[20];
     char noun1[20];
     char verb1[20];
