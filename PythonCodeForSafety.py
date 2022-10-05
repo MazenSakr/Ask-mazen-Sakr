@@ -20,6 +20,8 @@ finalImage = np.vstack((row1,row2))
 finalImage = cv2.cvtColor(finalImage,cv2.COLOR_BGR2RGB)
 
 plt.imshow(finalImage)
+plt.xticks([])
+plt.yticks([])
 plt.show
 
 #task 2
