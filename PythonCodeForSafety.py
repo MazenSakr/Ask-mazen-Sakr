@@ -41,27 +41,26 @@ lastKey = 'z'
 while True :
     check, frame = capture.read()
     readkey = cv2.waitKey(20)
-    print(readkey)
     if readkey != -1 :
         key = readkey
         cv2.destroyAllWindows()
-    if ( key == ord('q')) :
+    if  key == ord('q') or key == ord('Q') :
         break
-    elif key == ord('r') :#rotate frame
+    elif key == ord('r') or key == ord('R') :#rotate frame
         frame = cv2.rotate(frame,ROTATE_90_CLOCKWISE)
-    elif key == ord('c') :#save frame
+    elif key == ord('c') or key == ord('C') :#save frame
         cv2.imwrite("Resources/Capture.jpg",frame)   
-    elif key == ord('s') and lastKey != ord('s') :#start save video
+    elif (key == ord('s') or key == ord('s')) and (lastKey != ord('s') or lastKey != ord('S')) :#start save video
         outputVideo = cv2.VideoWriter('Resources/CaptureVideo.avi', cv2.VideoWriter_fourcc('M','J','P','G'), FPS, frameSize)
-    elif key == ord('s') and lastKey == ord('s') :#save video
+    elif (key == ord('s') or key == ord('S')) and (lastKey == ord('s') or lastKey == ord('S') ) :#save video
         outputVideo.write(frame)
-    elif key != ord('s') and lastKey == ord('s') :#end save video
+    elif (key != ord('s') or key != ord('S')) and (lastKey == ord('s') or lastKey == ord('S')) :#end save video
         outputVideo.release()
-    elif key == ord('g') :#convert grayscale
+    elif key == ord('g') or key == ord('G') :#convert grayscale
         frame = cv2.cvtColor(frame,COLOR_BGR2GRAY)
-    elif key == ord('h') :#convertHSV
+    elif key == ord('h') or key == ord('H')  :#convertHSV
         frame = cv2.cvtColor(frame,COLOR_BGR2HSV)
-    elif key == ord('x') :#show all
+    elif key == ord('x') or key == ord('X') :#show all
         rotatedFrame = cv2.rotate(frame,ROTATE_90_CLOCKWISE)
         cv2.imshow("Video2",rotatedFrame)
         imageGray = cv2.cvtColor(frame,COLOR_BGR2GRAY)
