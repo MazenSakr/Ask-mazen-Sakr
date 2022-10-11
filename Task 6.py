@@ -12,73 +12,75 @@ XvaluesBlue = []
 YvaluesBlue = []
 XvaluesGreen = []
 YvaluesGreen = []
-Image1 = cv2.imread("Resources/coral3.jpg")
-Image2 = cv2.imread("Resources/coral4.jpg")
-rectangleColor = (0,0,0)
 
-#callback fn
+#callback fn (Sama & Mazen)
 def mouseClick(event,x,y,flags,parameters) :
-    global Xvalues
-    global Yvalues
+    global XvaluesBlue
+    global YvaluesBlue
+    global XvaluesGreen
+    global YvaluesGreen
     global finalImage
     global outputImage
+    isBlue = False
+    isGreen = False
+    counter = 0 
+
     if event == cv2.EVENT_LBUTTONDOWN :
-        
+        isBlue = True
         XvaluesBlue.append(x)
         YvaluesBlue.append(y)
     if event ==cv2.EVENT_LBUTTONUP :
+        isBlue = False
         outputImage = finalImage
-        cv2.rectangle(finalImage,(Xvalues[-1],Yvalues[-1]),(x,y),rectangleColor,2)
         XvaluesBlue.append(x)
         YvaluesBlue.append(y)
-        rectangleColor = (0,0,0)
+        while(counter < len(XvaluesBlue)) :
+            cv2.rectangle(finalImage,(XvaluesBlue[counter],YvaluesBlue[counter]),(XvaluesBlue[counter+1],YvaluesBlue[counter+1]),(255,0,0),2)
+            counter += 2
     if event == cv2.EVENT_RBUTTONDOWN :
-        rectangleColor = (0,255,0)
-        Xvalues.append(x)
-        Yvalues.append(y)
+        isGreen = True
+        XvaluesGreen.append(x)
+        YvaluesGreen.append(y)
     if event ==cv2.EVENT_RBUTTONUP :
-        Xvalues.append(x)
-        Yvalues.append(y)
-        rectangleColor = (0,0,0)
-    if  event == cv2.EVENT_MOUSEMOVE :
         outputImage = finalImage
-        cv2.rectangle(finalImage,(Xvalues[-1],Yvalues[-1]),(x,y),rectangleColor,2)
-       
+        XvaluesGreen.append(x)
+        YvaluesGreen.append(y)
+        while(counter < len(XvaluesGreen)) :
+            cv2.rectangle(finalImage,(XvaluesGreen[counter],YvaluesGreen[counter]),(XvaluesGreen[counter+1],YvaluesGreen[counter+1]),(0,255,0),2)
+            counter += 2
+        isGreen = False
+    if  event == cv2.EVENT_MOUSEMOVE :
+        if isBlue :
+            outputImage = finalImage
+            cv2.rectangle(finalImage,(XvaluesBlue[-1],YvaluesBlue[-1]),(x,y),(255,0,0),2)
+        if isGreen :
+            outputImage = finalImage
+            cv2.rectangle(finalImage,(XvaluesGreen[-1],YvaluesGreen[-1]),(x,y),(0,255,0),2)       
 
-#main loop
+#main image formation (mohamed)
+finalImage=np.zeros((600, 1000 , 3), dtype="uint8")
+Real=cv2.imread("Resources/coral3.jpg")
+Real=cv2.resize(Real,(400,260))
+Changed=cv2.imread("Resources/coral4.jpg")
+Changed=cv2.resize(Changed,(500,500))
+#add images on the outputImageput image
+finalImage[20:280,550:950]= Real
+finalImage[20:520,10:510] = Changed
+#write on the image
+cv2.putText(finalImage,"Simple Left click and drag : add a Blue rectangle",(550,350),cv2.FONT_HERSHEY_SIMPLEX,0.45,(255,255,255),1)
+cv2.putText(finalImage,"Simple Right click and drag : add a Green rectangle",(550,400),cv2.FONT_HERSHEY_SIMPLEX,0.45,(255,255,255),1)
+cv2.putText(finalImage,"Press 'd' to clear the screen",(550,450),cv2.FONT_HERSHEY_SIMPLEX,0.45,(255,255,255),1)
+cv2.putText(finalImage,"Press 'q' to quit",(550,500),cv2.FONT_HERSHEY_SIMPLEX,0.45,(255,255,255),1)
+outputImage = finalImage
 
+cv2.imshow('Task 6',outputImage)
+cv2.setMouseCallback('Task 6',mouseClick)
 
-
-
-
-
-
-def rectangle_shape(event,x,y,flag,par):
-    global draw, ix, iy
-    if event == cv2.EVENT_LBUTTONDOWN:
-        draw=True
-        ix,iy = x,y
-    #elif event == cv2.EVENT_MOUSEMOVE:
-        #if draw == True:
-            #cv2.rectangle(image_window,(ix,iy),(x,y),(255,0,0),2)
-    elif event == cv2.EVENT_LBUTTONUP:
-        draw= False
-        cv2.rectangle(image_window,(ix,iy),(x,y),(255,0,0),2)
-
-    elif event == cv2.EVENT_RBUTTONDOWN:
-        draw = True
-        ix, iy = x, y
-
-    elif event == cv2.EVENT_RBUTTONUP:
-        draw= False
-        cv2.rectangle(image_window,(ix,iy),(x,y),(0,255,0),2)
-
-
-image_window= np.zeros((1024,1024,3),np.uint8)
-cv2.namedWindow(winname='image window')
-cv2.setMouseCallback('image window',rectangle_shape)
-
+#main loop (Sama & Mazen)
 while True:
-    cv2.imshow('image window',image_window)
-    if cv2.waitKey(1) & 0xFF == 'q':
+    cv2.imshow('Task 6',outputImage)
+    key = cv2.waitKey(20)
+    if key == ord('q') :
         break
+    if key == ord('d') :
+        outputImage = finalImage
