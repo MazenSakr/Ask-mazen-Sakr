@@ -120,3 +120,34 @@ plt.title("North")
 plt.xticks([])
 plt.yticks([])
 plt.show()
+
+
+#task 4
+import cv2
+import numpy as np
+
+
+def mouseClick(event,x,y,flags,parameters) :
+    global canvas
+    global lastX
+    global lastY
+    if event == cv2.EVENT_LBUTTONDBLCLK :#draw circle
+        canvas = cv2.circle(canvas,(x,y),10,(255),-1)
+        lastX = x
+        lastY = y
+    if event == cv2.EVENT_RBUTTONDOWN :#erase last circle
+        canvas = cv2.circle(canvas,(lastX,lastY),10,(0),-1)
+    if event == cv2.EVENT_RBUTTONDBLCLK :#erase all circles
+        canvas[:,:] = (0)
+    cv2.putText(canvas,"Double left click to draw circle",(400,0),cv2.FONT_HERSHEY_PLAIN,2,(255),3)
+
+lastX = 0
+lastY = 0 
+canvas = np.zeros((500,500,1),np.uint8)
+while True :
+    cv2.imshow("Drawing App",canvas)
+    cv2.setMouseCallback('Drawing App', mouseClick)
+    if(cv2.waitKey(20) == ord('q')) :
+        cv2.destroyAllWindows()
+        break
+
