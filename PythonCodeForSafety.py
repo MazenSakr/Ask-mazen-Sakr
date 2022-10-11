@@ -75,3 +75,48 @@ while True :
     
 capture.release()
 cv2.destroyAllWindows()
+
+
+#task 3
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+#draw map
+Map = np.zeros((457,912,3),np.uint8)
+Map[:,:] = (255,255,255)
+counter = 0 
+while(counter<457) :
+    cv2.line(Map,(0,counter),(912,counter),(0,0,0),1)
+    cv2.line(Map,(counter,0),(counter,454),(0,0,0),1)
+    cv2.line(Map,(counter+456,0),(counter+456,454),(0,0,0),1)
+    counter += 19
+cv2.rectangle(Map,(95,171),(114,190),(0,0,0),-1)
+
+# Maths explnation:
+# first the distace is calculated using distance = speed * time
+# then distance*cos(angle) is the change in x dimension
+# distance*sin(angle) is the change in y dimension 
+# then the two changes are added to the original point to get the final point 
+
+#calculate and draw line and end point
+angle = float(input("Input angle in degree:"))-90
+speed = float(input("Input speed in m/s:"))
+time = float(input("Input time taken in hours:"))
+distance = time*3.6*speed
+Ychange = int(distance*math.cos(math.radians(angle))*9.5)#9.5 is the ratio of pixels per km
+Xchange = int(distance*math.sin(math.radians(angle))*9.5)
+
+cv2.rectangle(Map,(95+Ychange,171+Xchange),(114+Ychange,190+Xchange),(0,0,255),-1)
+cv2.line(Map,(105,180),(105+Ychange,180+Xchange),(0,0,0),3)
+
+#draw and output
+Map = cv2.cvtColor(Map,cv2.COLOR_BGR2RGB)
+plt.imshow(Map)
+plt.xlabel("South")
+plt.ylabel("East")
+plt.title("North")
+plt.xticks([])
+plt.yticks([])
+plt.show()
