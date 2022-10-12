@@ -12,6 +12,8 @@ XvaluesBlue = []
 YvaluesBlue = []
 XvaluesGreen = []
 YvaluesGreen = []
+isBlue = False
+isGreen = False
 
 #callback fn (Sama & Mazen)
 def mouseClick(event,x,y,flags,parameters) :
@@ -21,9 +23,10 @@ def mouseClick(event,x,y,flags,parameters) :
     global YvaluesGreen
     global finalImage
     global outputImage
-    isBlue = False
-    isGreen = False
-    counter = 0 
+    global isBlue
+    global isGreen
+    counterBlue = 0 
+    counterGreen = 0
 
     if event == cv2.EVENT_LBUTTONDOWN :
         isBlue = True
@@ -31,31 +34,49 @@ def mouseClick(event,x,y,flags,parameters) :
         YvaluesBlue.append(y)
     if event ==cv2.EVENT_LBUTTONUP :
         isBlue = False
-        outputImage = finalImage
+        outputImage = finalImage.copy()
         XvaluesBlue.append(x)
         YvaluesBlue.append(y)
-        while(counter < len(XvaluesBlue)) :
-            cv2.rectangle(finalImage,(XvaluesBlue[counter],YvaluesBlue[counter]),(XvaluesBlue[counter+1],YvaluesBlue[counter+1]),(255,0,0),2)
-            counter += 2
+        while(counterBlue < len(XvaluesBlue)) :
+            cv2.rectangle(outputImage,(XvaluesBlue[counterBlue],YvaluesBlue[counterBlue]),(XvaluesBlue[counterBlue+1],YvaluesBlue[counterBlue+1]),(255,0,0),2)
+            counterBlue += 2
+        while(counterGreen < len(XvaluesGreen)) :
+            cv2.rectangle(outputImage,(XvaluesGreen[counterGreen],YvaluesGreen[counterGreen]),(XvaluesGreen[counterGreen+1],YvaluesGreen[counterGreen+1]),(0,255,0),2)
+            counterGreen += 2
     if event == cv2.EVENT_RBUTTONDOWN :
         isGreen = True
         XvaluesGreen.append(x)
         YvaluesGreen.append(y)
     if event ==cv2.EVENT_RBUTTONUP :
-        outputImage = finalImage
+        isGreen = False
+        outputImage = finalImage.copy()
         XvaluesGreen.append(x)
         YvaluesGreen.append(y)
-        while(counter < len(XvaluesGreen)) :
-            cv2.rectangle(finalImage,(XvaluesGreen[counter],YvaluesGreen[counter]),(XvaluesGreen[counter+1],YvaluesGreen[counter+1]),(0,255,0),2)
-            counter += 2
-        isGreen = False
+        while(counterBlue < len(XvaluesBlue)) :
+            cv2.rectangle(outputImage,(XvaluesBlue[counterBlue],YvaluesBlue[counterBlue]),(XvaluesBlue[counterBlue+1],YvaluesBlue[counterBlue+1]),(255,0,0),2)
+            counterBlue += 2
+        while(counterGreen < len(XvaluesGreen)) :
+            cv2.rectangle(outputImage,(XvaluesGreen[counterGreen],YvaluesGreen[counterGreen]),(XvaluesGreen[counterGreen+1],YvaluesGreen[counterGreen+1]),(0,255,0),2)
+            counterGreen += 2
     if  event == cv2.EVENT_MOUSEMOVE :
         if isBlue :
-            outputImage = finalImage
-            cv2.rectangle(finalImage,(XvaluesBlue[-1],YvaluesBlue[-1]),(x,y),(255,0,0),2)
+            outputImage = finalImage.copy()
+            cv2.rectangle(outputImage,(XvaluesBlue[-1],YvaluesBlue[-1]),(x,y),(255,0,0),2)
+            while(counterBlue < len(XvaluesBlue)-1) :
+                cv2.rectangle(outputImage,(XvaluesBlue[counterBlue],YvaluesBlue[counterBlue]),(XvaluesBlue[counterBlue+1],YvaluesBlue[counterBlue+1]),(255,0,0),2)
+                counterBlue += 2
+            while(counterGreen < len(XvaluesGreen)-1) :
+                cv2.rectangle(outputImage,(XvaluesGreen[counterGreen],YvaluesGreen[counterGreen]),(XvaluesGreen[counterGreen+1],YvaluesGreen[counterGreen+1]),(0,255,0),2)
+                counterGreen += 2  
         if isGreen :
-            outputImage = finalImage
-            cv2.rectangle(finalImage,(XvaluesGreen[-1],YvaluesGreen[-1]),(x,y),(0,255,0),2)       
+            outputImage = finalImage.copy()
+            cv2.rectangle(outputImage,(XvaluesGreen[-1],YvaluesGreen[-1]),(x,y),(0,255,0),2)
+            while(counterBlue < len(XvaluesBlue)-1) :
+                cv2.rectangle(outputImage,(XvaluesBlue[counterBlue],YvaluesBlue[counterBlue]),(XvaluesBlue[counterBlue+1],YvaluesBlue[counterBlue+1]),(255,0,0),2)
+                counterBlue += 2
+            while(counterGreen < len(XvaluesGreen)-1) :
+                cv2.rectangle(outputImage,(XvaluesGreen[counterGreen],YvaluesGreen[counterGreen]),(XvaluesGreen[counterGreen+1],YvaluesGreen[counterGreen+1]),(0,255,0),2)
+                counterGreen += 2       
 
 #main image formation (mohamed)
 finalImage=np.zeros((600, 1000 , 3), dtype="uint8")
@@ -71,7 +92,7 @@ cv2.putText(finalImage,"Simple Left click and drag : add a Blue rectangle",(550,
 cv2.putText(finalImage,"Simple Right click and drag : add a Green rectangle",(550,400),cv2.FONT_HERSHEY_SIMPLEX,0.45,(255,255,255),1)
 cv2.putText(finalImage,"Press 'd' to clear the screen",(550,450),cv2.FONT_HERSHEY_SIMPLEX,0.45,(255,255,255),1)
 cv2.putText(finalImage,"Press 'q' to quit",(550,500),cv2.FONT_HERSHEY_SIMPLEX,0.45,(255,255,255),1)
-outputImage = finalImage
+outputImage = finalImage.copy()
 
 cv2.imshow('Task 6',outputImage)
 cv2.setMouseCallback('Task 6',mouseClick)
@@ -81,6 +102,11 @@ while True:
     cv2.imshow('Task 6',outputImage)
     key = cv2.waitKey(20)
     if key == ord('q') :
+        cv2.destroyAllWindows()
         break
     if key == ord('d') :
-        outputImage = finalImage
+        outputImage = finalImage.copy()
+        XvaluesBlue.clear()
+        YvaluesBlue.clear()
+        XvaluesGreen.clear()
+        YvaluesGreen.clear()
