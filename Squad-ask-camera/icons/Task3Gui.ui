@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>829</width>
+    <width>836</width>
     <height>582</height>
    </rect>
   </property>
@@ -367,9 +367,9 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>40</y>
-      <width>311</width>
-      <height>171</height>
+      <y>60</y>
+      <width>321</width>
+      <height>181</height>
      </rect>
     </property>
     <property name="font">
@@ -387,8 +387,8 @@
    <widget class="QLabel" name="camera2Label">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>40</y>
+      <x>460</x>
+      <y>60</y>
       <width>321</width>
       <height>181</height>
      </rect>
@@ -522,7 +522,7 @@
      <rect>
       <x>650</x>
       <y>360</y>
-      <width>161</width>
+      <width>171</width>
       <height>171</height>
      </rect>
     </property>
@@ -537,12 +537,12 @@
       <rect>
        <x>10</x>
        <y>50</y>
-       <width>75</width>
+       <width>81</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Autunomus</string>
+      <string>Autonmous</string>
      </property>
     </widget>
     <widget class="QPushButton" name="depthholdButton">
@@ -588,14 +588,14 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
-       <width>81</width>
-       <height>16</height>
+       <y>10</y>
+       <width>161</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>9</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -692,7 +692,7 @@
      <rect>
       <x>650</x>
       <y>260</y>
-      <width>161</width>
+      <width>171</width>
       <height>91</height>
      </rect>
     </property>
@@ -728,10 +728,10 @@
     <widget class="QLabel" name="scripts">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>16</x>
        <y>10</y>
-       <width>47</width>
-       <height>13</height>
+       <width>51</width>
+       <height>21</height>
       </rect>
      </property>
      <property name="text">
@@ -744,8 +744,8 @@
      <rect>
       <x>330</x>
       <y>10</y>
-      <width>151</width>
-      <height>20</height>
+      <width>171</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -763,8 +763,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>829</width>
-     <height>21</height>
+     <width>836</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>

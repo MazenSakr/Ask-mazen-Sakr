@@ -1,36 +1,51 @@
 import cv2 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
 from PyQt5 import uic
-from PyQt5.QtGui import QPixmap
+import PyQt5.QtGui as QtGui
 import sys
+from multiprocessing import Process, connection
 
 class UI(QMainWindow):
 	def __init__(self):
 		super(UI, self).__init__()
-
-		# Load the ui file
-		uic.loadUi("image.ui", self)
-
-		# Define our widgets
-		self.button = self.findChild(QPushButton, "pushButton")
-		self.Camera1 = self.findChild(QLabel, "label")
-        self.Camera2 = self.findChild(QLabel, "label")
-		# Click The Dropdown Box
-		self.button.clicked.connect(self.clicker)
-						
-		# Show The App
+		uic.loadUi("Task3Gui.ui", self)
+		self.Camera1 = self.findChild(QLabel, "camera1Label")
+        self.Camera2 = self.findChild(QLabel, "camera2Label")
 		self.show()
 
-	def clicker(self):
-		fname = QFileDialog.getOpenFileName(self, "Open File", "c:\\gui\\images", "All Files (*);;PNG Files (*.png);;Jpg Files (*.jpg)")
+	def convertPixmap(self,frame):
+        height, width, channel = frame.shape()
+        bytesPerLine = 3* width
+        qtImage = QtGui.QImage(frame.data,width,height, bytesPerLine,QImage.Format_RGB888).rgbSwapped()
+		pixMap = QtGui.QPixmap(qtImage)
+		return pixMap
 
-		# Open The Image
-		if fname:
-			self.pixmap = QPixmap(fname[0])
-			# Add Pic to label
-			self.label.setPixmap(self.pixmap)
+    def takeCameraInput(self) :
+        capture = cv2.VideoCapture("http://192.168.0.5:4747/video")
+        check, frame = capture.read()
+        return frame
 
-# Initialize The App
-app = QApplication(sys.argv)
-UIWindow = UI()
-app.exec_()
+    def ApplyMapToLabel(self, pixMap) :
+        self.Camera1.setPixmap(pixMap)
+        self.Camera2.setPixmap(pixMap)
+
+    def camera1Init (self):
+        address = ("localhost", 1000)
+        listener = Listener(address,authkey=b'secret password')
+        self.connect1 = listener.accept()
+
+    def camera2Init (self):
+        address2 = ("localhost", 2000)
+        listener2 = Listener(address,authkey=b'secret password')
+        self.connect2 = listener2.accept()
+
+
+if __name__ == "__main__" :
+    app = QApplication(sys.argv)
+    UIWindow = UI()
+    app.exec_()
+    CameraInputProcess = Process(UI.takeCameraInput,(UI.self))
+    pixConvertProcess = Process(UI.convertPixmap,)
+
+
+
