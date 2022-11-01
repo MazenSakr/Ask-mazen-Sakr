@@ -6,7 +6,7 @@ import sys
 class UI(QMainWindow):
 	def __init__(self):
 		super(UI, self).__init__()
-		uic.loadUi("Image-Viewer-App.ui", self)
+		uic.loadUi("Image Viewer App\Image-Viewer-App.ui", self)
 		self.button = self.findChild(QPushButton, "pushButton")
 		self.label = self.findChild(QLabel, "label")
 		self.button.clicked.connect(self.clicker)
